@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <description>以下是給login畫面(圖片長度為4)的驗證碼物件設定</description>
+    <!--    <listener>
+        <description>ServletContextListener, HttpSessionListener</description>
+        <listener-class>uuu.vgb.web.VisitorCounter</listener-class>
+    </listener>-->
+    <servlet>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <servlet-class>uuu.vgb.view.CaptchaServlet</servlet-class>
+        <init-param>
+            <param-name>len</param-name>
+            <param-value>4</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <url-pattern>/images/captcha.jpg</url-pattern>
+    </servlet-mapping>
+    <description>以下是給register畫面(圖片長度為預設值6)的驗證碼物件設定</description>
+    <servlet>
+        <servlet-name>RegisterCaptchaServlet</servlet-name>
+        <servlet-class>uuu.vgb.view.CaptchaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterCaptchaServlet</servlet-name>
+        <url-pattern>/images/register_captcha.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>HelloJSP</servlet-name>
+        <jsp-file>/Mod12/hello.jsp</jsp-file>
+        <init-param>
+            <param-name>welcome</param-name>
+            <param-value>歡迎</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HelloJSP</servlet-name>
+        <url-pattern>/Mod12/hello.php</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30 <!--(分鐘)-->
+        </session-timeout>
+    </session-config>
+    <!--所有錯誤畫面處理-->
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/error.jsp</location>
+    </error-page>
+    <!--404的錯誤處理(更改錯誤畫面)-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/404.jsp</location>
+    </error-page>
+    <!--資源授權設定-->
+    <security-constraint>
+        <display-name>All Pages</display-name>
+        <web-resource-collection>
+            <web-resource-name>All Pages</web-resource-name>
+            <description>所有網頁的統一設定</description>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <!--限制哪些群組可以用-->
+        <!--        <auth-constraint>
+            <description/>
+            <role-name>*</role-name>
+        </auth-constraint>-->
+        <!--將auth-constraint設空標籤，即阻擋所有的權限進入伺服器<auth-constraint/>-->
+    </security-constraint>
+    <security-constraint>
+        <display-name>Admins Pages</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admins Pages</web-resource-name>
+            <description/>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admins</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>admins</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>users</role-name>
+    </security-role>
+</web-app>
